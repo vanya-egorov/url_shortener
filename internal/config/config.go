@@ -13,18 +13,22 @@ type Config struct {
 	Env         string `yaml:"env" env-required:"true"`
 	StoragePath string `yaml:"storage_path" env-default:"./storage/storage.db"`
 	HTTPServer  `yaml:"http_server"`
-	Admin       `yaml:"admin"`
-}
-
-type Admin struct {
-	User     string `yaml:"username" env-required:"true"`
-	Password string `yaml:"password" env:"HTTP_SERVER_PASSWORD" env-required:"true"`
+	Postgres    `yaml:"postgres"`
 }
 
 type HTTPServer struct {
 	Address     string        `yaml:"address" env-default:"localhost:8080"`
 	Timeout     time.Duration `yaml:"timeout" env-default:"4s"`
 	IdleTimeout time.Duration `yaml:"idle_timeout" env-default:"60s"`
+}
+
+type Postgres struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	DBName   string `yaml:"dbname"`
+	SSLMode  string `yaml:"sslmode"`
 }
 
 func MustLoad() *Config {

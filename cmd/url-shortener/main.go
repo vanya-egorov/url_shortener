@@ -4,6 +4,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/vanya-egorov/url_shortener.git/internal/config"
+	"github.com/vanya-egorov/url_shortener.git/internal/http-server/handlers/redirect"
+	_ "github.com/vanya-egorov/url_shortener.git/internal/http-server/handlers/redirect"
 	"github.com/vanya-egorov/url_shortener.git/internal/http-server/handlers/url/save"
 	mwLogger "github.com/vanya-egorov/url_shortener.git/internal/http-server/middleware/logger"
 	"github.com/vanya-egorov/url_shortener.git/internal/lib/logger/sl"
@@ -42,6 +44,7 @@ func main() {
 	router.Use(middleware.URLFormat)
 
 	router.Post("/url", save.New(log, storage))
+	router.Get("/{alias}", redirect.New(log, storage))
 
 	log.Info("starting server", slog.String("address", cfg.Address))
 
@@ -53,11 +56,12 @@ func main() {
 		IdleTimeout:  cfg.HTTPServer.IdleTimeout,
 	}
 
-	if err := srv.ListenAndServe(); err != nil {
+	if err = srv.ListenAndServe(); err != nil {
 		log.Error("failed to start server", sl.Err(err))
 	}
 
-	log.Error("stopped server", slog.String("address", cfg.Address))
+	log.Error("server stopped")
+
 }
 
 func setupLogger(env string) *slog.Logger {
