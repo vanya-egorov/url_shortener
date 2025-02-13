@@ -1,14 +1,7 @@
 env: "local"
 storage_path:  "host=${DB_HOST} port=${DB_PORT} user=${DB_USER} password=${DB_PASS} dbname=${DB_NAME} sslmode=${DB_SSLMODE}"
 http_server:
-    address: "localhost:8000"
+    address: "0.0.0.0:8000"
     timeout: 10s
     idle_timeout: 60s
-db:
-    host: "postgres"
-    port: 5432
-    user: "user"
-    password: "password"
-    dbname: "postgres"
-    sslmode: "disable"
 

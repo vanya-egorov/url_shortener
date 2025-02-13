@@ -15,7 +15,7 @@ RUN go mod download
 
 COPY . ./
 
-RUN go get github.com/githubnemo/CompileDaemon
-RUN go install github.com/githubnemo/CompileDaemon
+RUN go install github.com/githubnemo/CompileDaemon@latest
+RUN go mod vendor
 
 ENTRYPOINT CompileDaemon --build="go build cmd/url-shortener/main.go" -command="./main"
